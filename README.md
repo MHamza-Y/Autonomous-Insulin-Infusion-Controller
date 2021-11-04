@@ -20,3 +20,10 @@ Run following command to start training in terminal,
 
 or just execute `simglucose_train.py` in your ide
 
+## Monitor Training 
+
+Run tensorboard to monitor training using,
+
+`tensorboard --logdir <tenorboard dir>`
+
+Tensorboard dir is created after starting the training. Substitute the dir name in the command above.
