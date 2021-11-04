@@ -12,3 +12,11 @@ It is recommended to install the requirements in virtual env.
 
     `pip install -r requirements-cpu.txt`
 
+## Starting the Training 
+
+Run following command to start training in terminal,
+
+`python simglucose_train.py`
+
+or just execute `simglucose_train.py` in your ide
+
