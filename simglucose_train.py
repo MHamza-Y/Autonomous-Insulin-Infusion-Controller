@@ -2,6 +2,7 @@ import gym
 from gym.envs.registration import register
 from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import CheckpointCallback
+from stable_baselines3.common.monitor import Monitor
 
 from save_on_best_result_callback import SaveOnBestTrainingRewardCallback
 
@@ -21,6 +22,7 @@ checkpoint_callback = CheckpointCallback(save_freq=10000, save_path=save_folder,
 best_model_save_callback = SaveOnBestTrainingRewardCallback(check_freq=2110, log_dir=save_folder)
 
 env = gym.make('simglucose-adolescent2-v0')
+env = Monitor(env, save_folder)
 
 model = PPO("MlpPolicy", env, verbose=1, tensorboard_log="./simglucose_ppo_tensorboard/")
 model.learn(total_timesteps=1000000, callback=[best_model_save_callback, checkpoint_callback])
