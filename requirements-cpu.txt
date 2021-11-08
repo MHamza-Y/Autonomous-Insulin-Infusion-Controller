@@ -1,6 +1,0 @@
-simglucose
-gym
-torch
-torchvision
-torchaudio
-stable-baselines3
