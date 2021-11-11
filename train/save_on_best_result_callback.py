@@ -1,9 +1,9 @@
-import numpy as np
-from stable_baselines.common.callbacks import BaseCallback
 import os
 
-from stable_baselines.bench.monitor import load_results
-from stable_baselines.results_plotter import ts2xy
+import numpy as np
+from stable_baselines3.common.callbacks import BaseCallback
+from stable_baselines3.common.monitor import load_results
+from stable_baselines3.common.results_plotter import ts2xy
 
 
 class SaveOnBestTrainingRewardCallback(BaseCallback):

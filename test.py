@@ -1,25 +1,39 @@
-from stable_baselines import PPO2
-from stable_baselines.common import make_vec_env
-from stable_baselines.common.policies import MlpLnLstmPolicy
-
-from stable_baselines.common.callbacks import CheckpointCallback
-from stable_baselines.bench.monitor import Monitor
-
-from stable_baselines.common.vec_env.subproc_vec_env import SubprocVecEnv
+from stable_baselines3 import PPO
 
 from train.env.simglucose_gym_env import T1DSimEnv
+import glob
+import os
+
+list_of_files = glob.glob('./training_ws/*.zip')  # * means all if need specific format then *.csv
+latest_saved_model = max(list_of_files, key=os.path.getctime)
+print(latest_saved_model)
 
 
-model = PPO2.load('training_ws/rl_model_4775936_steps.zip')
-env  = T1DSimEnv()
-env.reset()
-for t in range(1000):
-    env.render(mode='human')
-    action = env.action_space.sample()
-    observation, reward, done, info = env.step(action)
-    print(observation)
-    print("Reward = {}".format(reward))
-    print("Action = {}".format(action))
-    if done:
-        print("Episode finished after {} timesteps".format(t + 1))
-        break
+def main():
+    vec_env_kwargs = {'start_method': 'spawn'}
+    # env = make_vec_env(T1DSimEnv, n_envs=40, monitor_dir='./training_ws', vec_env_cls=SubprocVecEnv,
+    #                   vec_env_kwargs=vec_env_kwargs)
+    env = T1DSimEnv(patient_name='adult#004')
+    model = PPO.load(latest_saved_model,env=env)
+    env = env
+    observation = env.reset()
+
+    env.training = False
+
+    for t in range(1000):
+
+        action, _states = model.predict(observation, deterministic=True)
+        observation, reward, done, info = env.step(action)
+        print(observation)
+        print("Reward = {}".format(reward))
+        print("Action = {}".format(action))
+        print('Prob = {}'.format(1))
+
+        env.render(mode='human')
+        if done:
+            print("Episode finished after {} timesteps".format(t + 1))
+            break
+
+
+if __name__ == '__main__':
+    main()
