@@ -22,7 +22,7 @@ def main():
 
     for t in range(1000):
 
-        action, _states = model.predict(observation)
+        action, _states = model.predict(observation, deterministic=True)
         observation, reward, done, info = env.step(action)
         print(observation)
         print("Reward = {}".format(reward))
