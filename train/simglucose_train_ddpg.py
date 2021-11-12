@@ -1,13 +1,8 @@
-
-from stable_baselines import DDPG
-from stable_baselines.ddpg.policies import MlpPolicy
-
-from stable_baselines.common.callbacks import CheckpointCallback
-from stable_baselines.bench.monitor import Monitor
-
-from save_on_best_result_callback import SaveOnBestTrainingRewardCallback
+from stable_baselines3.common.callbacks import CheckpointCallback
+from stable_baselines3.common.monitor import Monitor
 
 from train.env.simglucose_gym_env import T1DSimEnv
+from train.save_on_best_result_callback import SaveOnBestTrainingRewardCallback
 
 
 def main():
@@ -18,9 +13,9 @@ def main():
 
 
     env = Monitor(T1DSimEnv(),filename='./training_ws')
-    model = DDPG(MlpPolicy,env, reward_scale=0.01, gamma=0.99, buffer_size=10000,tensorboard_log="./simglucose_ddpg_tensorboard/")
+    #model = DDPG(MlpPolicy,env, reward_scale=0.01, gamma=0.99, buffer_size=10000,tensorboard_log="./simglucose_ddpg_tensorboard/")
 
-    model.learn(total_timesteps=50000000, callback=[best_model_save_callback, checkpoint_callback])
+    #model.learn(total_timesteps=50000000, callback=[best_model_save_callback, checkpoint_callback])
 
 
 if __name__ == "__main__":

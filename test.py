@@ -14,7 +14,7 @@ def main():
     # env = make_vec_env(T1DSimEnv, n_envs=40, monitor_dir='./training_ws', vec_env_cls=SubprocVecEnv,
     #                   vec_env_kwargs=vec_env_kwargs)
     env = T1DSimEnv(patient_name='adult#004')
-    model = PPO.load(latest_saved_model,env=env)
+    model = PPO.load(latest_saved_model, env=env)
     env = env
     observation = env.reset()
 
@@ -22,12 +22,11 @@ def main():
 
     for t in range(1000):
 
-        action, _states = model.predict(observation, deterministic=True)
+        action, _states = model.predict(observation)
         observation, reward, done, info = env.step(action)
         print(observation)
         print("Reward = {}".format(reward))
         print("Action = {}".format(action))
-        print('Prob = {}'.format(1))
 
         env.render(mode='human')
         if done:
