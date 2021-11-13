@@ -1,6 +1,6 @@
 from stable_baselines3 import PPO
 
-from train.env.simglucose_gym_env import T1DSimEnv
+from train.env.simglucose_gym_env import T1DSimEnv, ModT1DSimEnv
 import glob
 import os
 
@@ -27,6 +27,7 @@ def main():
         print(observation)
         print("Reward = {}".format(reward))
         print("Action = {}".format(action))
+        print('Info = {}'.format(info))
 
         env.render(mode='human')
         if done:
