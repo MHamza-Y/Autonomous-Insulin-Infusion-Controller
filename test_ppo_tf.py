@@ -6,7 +6,7 @@ from train.env.simglucose_gym_env import T1DSimEnv
 import glob
 import os
 
-from train.reward.custom_rewards import custom_reward
+from train.reward.custom_rewards import shaped_reward_around_normal_bg
 
 list_of_files = glob.glob('./training_ws/*.zip')  # * means all if need specific format then *.csv
 latest_saved_model = max(list_of_files, key=os.path.getctime)
@@ -18,7 +18,7 @@ def main():
     # env = make_vec_env(T1DSimEnv, n_envs=40, monitor_dir='./training_ws', vec_env_cls=SubprocVecEnv,
     #                   vec_env_kwargs=vec_env_kwargs)
     vec_env_kwargs = {'start_method': 'fork'}
-    env_kwargs = {'reward_fun': custom_reward}
+    env_kwargs = {'reward_fun': shaped_reward_around_normal_bg}
     env = make_vec_env(T1DSimEnv, n_envs=32, vec_env_cls=SubprocVecEnv,
                        vec_env_kwargs=vec_env_kwargs, env_kwargs=env_kwargs)
     model = PPO2.load(latest_saved_model, env=env)
