@@ -1,5 +1,5 @@
 .idea
 results
 *tensorboard
-training_ws
+*training_ws
 venv*

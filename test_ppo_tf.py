@@ -8,10 +8,10 @@ import os
 
 from train.reward.custom_rewards import shaped_reward_around_normal_bg
 
+
 list_of_files = glob.glob('./training_ws/*.zip')  # * means all if need specific format then *.csv
 latest_saved_model = max(list_of_files, key=os.path.getctime)
 print(latest_saved_model)
-
 
 def main():
     vec_env_kwargs = {'start_method': 'spawn'}
@@ -31,9 +31,8 @@ def main():
 
         action, _states = model.predict(observation, deterministic=True)
         observation, reward, done, info = env.step(action)
-        print(observation[0])
+        print('Obs = {}'.format(observation[0]) + ' Action = {}'.format(action[0]))
         print("Reward = {}".format(reward[0]))
-        print("Action = {}".format(action[0]))
         # print('Info = {}'.format(info))
 
 
