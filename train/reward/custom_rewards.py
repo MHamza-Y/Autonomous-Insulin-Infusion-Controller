@@ -4,7 +4,7 @@ REF_BG_POINT = 131
 LOW_BG_LIMIT = 70
 HIGH_BG_LIMIT = 330
 HIGH_BG_SAFE_LIMIT = 170
-LOW_BG_SAFE_LIMIT = 100
+LOW_BG_SAFE_LIMIT = 110
 MAX_HIGH_SAFE_INTERVAL = HIGH_BG_SAFE_LIMIT - REF_BG_POINT
 MAX_LOW_SAFE_INTERVAL = REF_BG_POINT - LOW_BG_SAFE_LIMIT
 MAX_HIGH_TO_REF_DIFF = HIGH_BG_LIMIT - REF_BG_POINT
@@ -51,11 +51,11 @@ def shaped_negative_reward_around_normal_bg(BG_last_hour):
 
     if REF_BG_POINT < current_bg <= HIGH_BG_SAFE_LIMIT:
         diff = current_bg - REF_BG_POINT
-        reward = 3*(1 - ((diff / MAX_HIGH_SAFE_INTERVAL) ** 0.5))
+        reward = 3 * (1 - ((diff / MAX_HIGH_SAFE_INTERVAL) ** 0.2))
     elif REF_BG_POINT >= current_bg > LOW_BG_SAFE_LIMIT:
         diff = REF_BG_POINT - current_bg
-        reward = 3*(1 - ((diff / MAX_LOW_SAFE_INTERVAL) ** 0.5))
-    elif current_bg>HIGH_BG_SAFE_LIMIT:
+        reward = 3 * (1 - ((diff / MAX_LOW_SAFE_INTERVAL) ** 0.2))
+    elif current_bg > HIGH_BG_SAFE_LIMIT:
         reward = -2
     else:
         reward = -1
