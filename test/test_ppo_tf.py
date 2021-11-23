@@ -22,7 +22,7 @@ def main():
     #                   vec_env_kwargs=vec_env_kwargs)
     vec_env_kwargs = {'start_method': 'fork'}
     env_kwargs = {'reward_fun': no_negativityV2}
-    env = make_vec_env(T1DAdultSimEnv, n_envs=1, vec_env_cls=SubprocVecEnv,
+    env = make_vec_env(T1DAdultSimEnv, n_envs=32, vec_env_cls=SubprocVecEnv,
                        vec_env_kwargs=vec_env_kwargs, env_kwargs=env_kwargs)
     model = PPO2.load(latest_saved_model, env=env)
 

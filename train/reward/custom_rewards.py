@@ -80,18 +80,37 @@ def no_negativity(BG_last_hour):
 
     return reward
 
+
 def no_negativityV2(BG_last_hour):
     current_bg = BG_last_hour[-1]
     if REF_BG_POINT < current_bg:
         diff = current_bg - REF_BG_POINT
-        reward = (1 - ((diff / MAX_HIGH_TO_REF_DIFF) ** 0.1))
+        reward = (1 - ((diff / MAX_HIGH_TO_REF_DIFF) ** 0.06))
     elif REF_BG_POINT >= current_bg:
         diff = REF_BG_POINT - current_bg
         reward = (1 - ((diff / MAX_LOW_TO_REF_DIFF) ** 0.1))
     else:
-        reward = 3e-3
+        reward = 3e-4
 
     return reward
+
+
+def partial_negativity(BG_last_hour):
+    current_bg = BG_last_hour[-1]
+    if HIGH_BG_SAFE_LIMIT <= current_bg:
+        diff = current_bg - HIGH_BG_SAFE_LIMIT
+        reward = -(1 - ((diff / MAX_HIGH_SAFE_INTERVAL) ** 0.5))
+    elif REF_BG_POINT < current_bg:
+        diff = current_bg - REF_BG_POINT
+        reward = (1 - ((diff / MAX_HIGH_TO_REF_DIFF) ** 0.3))
+    elif REF_BG_POINT >= current_bg:
+        diff = REF_BG_POINT - current_bg
+        reward = (1 - ((diff / MAX_LOW_TO_REF_DIFF) ** 0.1))
+    else:
+        reward = -3e-4
+
+    return reward
+
 
 def risk_diff(BG_last_hour):
     if len(BG_last_hour) < 2:

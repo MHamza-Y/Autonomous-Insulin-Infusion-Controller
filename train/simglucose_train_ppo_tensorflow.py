@@ -3,6 +3,7 @@ from stable_baselines import PPO2
 from stable_baselines.common import make_vec_env
 from stable_baselines.common.callbacks import CheckpointCallback, EvalCallback
 from stable_baselines.common.policies import MlpLnLstmPolicy, MlpLstmPolicy
+from stable_baselines.common.schedules import LinearSchedule, PiecewiseSchedule
 from stable_baselines.common.vec_env import SubprocVecEnv, VecNormalize
 
 from train.env.simglucose_gym_env import T1DSimEnv, T1DDiscreteSimEnv, T1DAdultSimEnv, T1DAdultSimV2Env, T1DDiscreteEnv
@@ -19,16 +20,21 @@ def main():
     reward_func = no_negativityV2
     vec_env_kwargs = {'start_method': 'fork'}
     env_kwargs = {'reward_fun': reward_func}
-    n_envs = 1
+    n_envs = 32
     env = make_vec_env(env_class, n_envs=n_envs, monitor_dir='./training_ws', vec_env_cls=SubprocVecEnv,
                        vec_env_kwargs=vec_env_kwargs, env_kwargs=env_kwargs)
-    #env = VecNormalize(env, clip_obs=350, clip_reward=10000, gamma=0.9999)
+    # env = VecNormalize(env, clip_obs=350, clip_reward=10000, gamma=0.9999)
 
-    #policy_kwargs = {'net_arch': [64, 64, 'lstm', dict(vf=[64, 64, 64, 64], pi=[64, 64, 64, 64])], 'n_lstm': 32}
+    # policy_kwargs = {'net_arch': [64, 64, 'lstm', dict(vf=[64, 64, 64, 64], pi=[64, 64, 64, 64])], 'n_lstm': 32}
     policy_kwargs = {'net_arch': [32, 'lstm', dict(vf=[32, 32], pi=[32, 32])], 'n_lstm': 32}
+    cliprange_scd = PiecewiseSchedule(
+        endpoints=[(0.01, 0.0001), (0.992, 0.001), (0.994, 0.01), (0.998, 0.1), (0.999, 0.15)],
+        outside_value=0.2).value
+
     model = PPO2(MlpLnLstmPolicy, env, verbose=1, tensorboard_log="./simglucose_ppo_tensorboard/",
                  n_steps=128, learning_rate=3e-5, ent_coef=0.0001, gamma=0.99, nminibatches=n_envs,
-                 policy_kwargs=policy_kwargs, vf_coef=0.8, lam=0.91)
+                 policy_kwargs=policy_kwargs, vf_coef=0.8, lam=0.91, cliprange=cliprange_scd,
+                 cliprange_vf=cliprange_scd)
 
     model.learn(total_timesteps=50000000, callback=[checkpoint_callback])
 
