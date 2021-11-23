@@ -8,23 +8,22 @@ import glob
 import os
 
 from train.reward.custom_rewards import custom_reward, shaped_reward_around_normal_bg, \
-    shaped_negative_reward_around_normal_bg
+    shaped_negative_reward_around_normal_bg, no_negativity
 
 list_of_files = glob.glob('./training_ws/*.zip')  # * means all if need specific format then *.csv
 latest_saved_model = max(list_of_files, key=os.path.getctime)
-print(latest_saved_model)
 
 
 def main():
     vec_env_kwargs = {'start_method': 'spawn'}
     # env = make_vec_env(T1DSimEnv, n_envs=40, monitor_dir='./training_ws', vec_env_cls=SubprocVecEnv,
     #                   vec_env_kwargs=vec_env_kwargs)
-    env_kwargs = {'reward_fun': risk_diff}
+    env_kwargs = {'reward_fun': no_negativity}
     env = make_vec_env(T1DSimHistoryEnv, n_envs=1, monitor_dir='./training_ws', vec_env_cls=SubprocVecEnv,
                        vec_env_kwargs=vec_env_kwargs, env_kwargs=env_kwargs)
 
     model = PPO.load(latest_saved_model, env=env)
-    env = env
+
     observation = env.reset()
 
     for t in range(1000):
