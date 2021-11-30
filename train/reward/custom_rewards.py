@@ -1,9 +1,9 @@
 import numpy as np
 from simglucose.analysis.risk import risk_index
 
-REF_BG_POINT = 105
+REF_BG_POINT = 130
 LOW_BG_LIMIT = 70
-HIGH_BG_LIMIT = 330
+HIGH_BG_LIMIT = 350
 HIGH_BG_SAFE_LIMIT = 180
 LOW_BG_SAFE_LIMIT = 90
 MAX_HIGH_SAFE_INTERVAL = HIGH_BG_SAFE_LIMIT - REF_BG_POINT
@@ -98,11 +98,11 @@ def no_negativityV2(BG_last_hour):
 def partial_negativity(BG_last_hour):
     current_bg = BG_last_hour[-1]
     if HIGH_BG_SAFE_LIMIT <= current_bg:
-        diff = current_bg - HIGH_BG_SAFE_LIMIT
-        reward = -(1 - ((diff / MAX_HIGH_SAFE_INTERVAL) ** 0.5))
+        diff = HIGH_BG_LIMIT - current_bg
+        reward = -5 * (1 - (diff / (HIGH_BG_LIMIT - HIGH_BG_SAFE_LIMIT)))
     elif REF_BG_POINT < current_bg:
         diff = current_bg - REF_BG_POINT
-        reward = (1 - ((diff / MAX_HIGH_TO_REF_DIFF) ** 0.3))
+        reward = (1 - ((diff / MAX_HIGH_SAFE_INTERVAL) ** 0.3))
     elif REF_BG_POINT >= current_bg:
         diff = REF_BG_POINT - current_bg
         reward = (1 - ((diff / MAX_LOW_TO_REF_DIFF) ** 0.1))

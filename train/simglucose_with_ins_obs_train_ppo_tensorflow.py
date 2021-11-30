@@ -6,7 +6,8 @@ from stable_baselines.common.policies import MlpLnLstmPolicy, MlpLstmPolicy
 from stable_baselines.common.schedules import LinearSchedule, PiecewiseSchedule
 from stable_baselines.common.vec_env import SubprocVecEnv, VecNormalize
 
-from train.env.simglucose_gym_env import T1DSimEnv, T1DDiscreteSimEnv, T1DAdultSimEnv, T1DAdultSimV2Env, T1DDiscreteEnv
+from train.env.simglucose_gym_env import T1DSimEnv, T1DDiscreteSimEnv, T1DAdultSimEnv, T1DAdultSimV2Env, T1DDiscreteEnv, \
+    T1DInsObsSimEnv
 from train.reward.custom_rewards import shaped_reward_around_normal_bg, shaped_negative_reward_around_normal_bg, \
     smooth_reward, no_negativity, risk_diff, no_negativityV2, partial_negativity
 from train.save_on_best_result_callback_v2 import SaveOnBestTrainingRewardCallback
@@ -16,8 +17,8 @@ def main():
     save_folder = 'training_ws/'
     checkpoint_callback = CheckpointCallback(save_freq=128, save_path=save_folder,
                                              name_prefix="rl_model")
-    env_class = T1DAdultSimEnv
-    reward_func = partial_negativity
+    env_class = T1DInsObsSimEnv
+    reward_func = orig_risk_diff
     vec_env_kwargs = {'start_method': 'fork'}
     env_kwargs = {'reward_fun': reward_func}
     n_envs = 32
