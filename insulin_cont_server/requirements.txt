@@ -1,0 +1,5 @@
+pyzmq
+#gym==0.20.0
+stable-baselines[mpi]==2.10.2
+tensorflow==1.14
+#tensorboard

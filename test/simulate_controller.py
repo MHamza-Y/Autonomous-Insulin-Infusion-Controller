@@ -17,8 +17,8 @@ from train.env.simglucose_gym_env import T1DAdultSimEnv
 from train.reward.custom_rewards import partial_negativity
 
 list_of_files = glob.glob('./training_ws/*.zip')  # * means all if need specific format then *.csv
-latest_saved_model = max(list_of_files, key=os.path.getctime)
-latest_saved_model = 'training_ws/rl_model_22450176_steps.zip'
+#latest_saved_model = max(list_of_files, key=os.path.getctime)
+latest_saved_model = 'training_ws/rl_model_1187840_steps.zip'
 # 1187840_steps
 controller = PPOController(0, latest_saved_model)
 

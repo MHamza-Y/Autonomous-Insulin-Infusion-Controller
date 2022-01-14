@@ -1,0 +1,21 @@
+version: "3.5"
+
+services:
+  insulin-cont-server:
+    build: insulin_cont_server
+    ipc: host
+    networks:
+      - proxynet
+    ports:
+      - "5555:5555"
+
+  sim-client:
+    build: client
+    ipc: host
+    networks:
+      - proxynet
+
+
+networks:
+  proxynet:
+    name: insulin_cont_services_network

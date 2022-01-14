@@ -378,7 +378,7 @@ class T1DAdultSimEnv(gym.Env):
     def reset(self):
         self.env, _, _, _ = self._create_env_from_random_state()
         obs, _, _, _ = self.env.reset()
-        return self.env.reset()
+        return obs
 
     def seed(self, seed=None):
         self.np_random, seed1 = seeding.np_random(seed=seed)

@@ -8,7 +8,7 @@ from stable_baselines.common.vec_env import SubprocVecEnv, VecNormalize
 
 from train.env.simglucose_gym_env import T1DSimEnv, T1DDiscreteSimEnv, T1DAdultSimEnv, T1DAdultSimV2Env, T1DDiscreteEnv
 from train.reward.custom_rewards import shaped_reward_around_normal_bg, shaped_negative_reward_around_normal_bg, \
-    smooth_reward, no_negativity, risk_diff, no_negativityV2, partial_negativity
+    smooth_reward, no_negativity, risk_diff, no_negativityV2, partial_negativity, partial_negativityV2
 from train.save_on_best_result_callback_v2 import SaveOnBestTrainingRewardCallback
 
 
@@ -17,7 +17,7 @@ def main():
     checkpoint_callback = CheckpointCallback(save_freq=128, save_path=save_folder,
                                              name_prefix="rl_model")
     env_class = T1DAdultSimEnv
-    reward_func = partial_negativity
+    reward_func = partial_negativityV2
     vec_env_kwargs = {'start_method': 'fork'}
     env_kwargs = {'reward_fun': reward_func}
     n_envs = 32
@@ -33,7 +33,7 @@ def main():
 
     model = PPO2(MlpLnLstmPolicy, env, verbose=1, tensorboard_log="./simglucose_ppo_tensorboard/",
                  n_steps=128, learning_rate=3e-5, ent_coef=0.0001, gamma=0.999, nminibatches=n_envs,
-                 policy_kwargs=policy_kwargs, vf_coef=0.8, lam=0.91, cliprange=0.1,
+                 policy_kwargs=policy_kwargs, vf_coef=0.8, lam=0.92, cliprange=0.1,
                  cliprange_vf=0.1)
 
     model.learn(total_timesteps=50000000, callback=[checkpoint_callback])
