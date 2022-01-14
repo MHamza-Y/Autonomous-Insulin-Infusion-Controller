@@ -24,7 +24,7 @@ To run the blood glucose controller server and sandbox simulation client install
  - [Docker and Docker Compose](https://docs.docker.com/get-docker/) on any OS
  
     
-## Starting Sandbox Data Simulation Client/Server
+## Starting Client/Server Services
 
 To start Client/Server services execute the following command in the root folder,
 
