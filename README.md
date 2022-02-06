@@ -7,7 +7,11 @@ Important notes,
 - To test the code run the docker service. Which starts a server (returns insulin basal rate for given Blood glucose value) and client (using dexcom sandbox data) service.
 - The test/train python scripts should be execute from the root folder.
 
-
+## Results
+Results compared with no-controller and pid-controller scenario while keeping same meal plan. Trained for 1.2 million steps with fixed hyperparameters and early stopping. The performance drops after 1.2m training steps. Which could be fixed by decreasing learning rate, cliprange etc with increasing steps to avoid catastrophic forgetting.
+| Without Controller | PID Controller | PPO with LSTM Policy |
+| --- | --- | --- |
+| ![image](https://user-images.githubusercontent.com/6195902/152699396-0cb972e7-f57a-42bc-bb89-1a8a88549cf2.png) | ![image](https://user-images.githubusercontent.com/6195902/152699413-c367a188-202c-4afa-aaf4-f62abbc2f03d.png) | ![image](https://user-images.githubusercontent.com/6195902/152699540-0c98d485-cf67-44c7-9035-4a3395df2c2f.png)| 
 
 
 ## Installing Requirements 
